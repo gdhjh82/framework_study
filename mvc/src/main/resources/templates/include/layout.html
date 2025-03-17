@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>게시판</title>
+</head>
+<body>
+	<!-- 이 부분을 header.html로 쓰겠다 뭐 요런 뜻? -->
+	<th:block th:replace="~{include/header :: headerLayout}"></th:block>
+	<th:block th:replace="~{include/nav :: navLayout}"></th:block>
+	<div layout:fragment="content"></div>
+</body>
+</html>
