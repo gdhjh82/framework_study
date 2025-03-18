@@ -1,6 +1,8 @@
 package com.gn.mvc.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,11 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.gn.mvc.dto.AttachDto;
 import com.gn.mvc.dto.BoardDto;
 import com.gn.mvc.dto.PageDto;
 import com.gn.mvc.dto.SearchDto;
+import com.gn.mvc.entity.Attach;
 import com.gn.mvc.entity.Board;
+import com.gn.mvc.service.AttachService;
 import com.gn.mvc.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +46,7 @@ public class BoardController {
 //		this.service = service;
 //	}
 	// 3. 생성자 주입 + final
-	
+	private final AttachService attachService;
 	private final BoardService service;
 	
 //	@Autowired
@@ -68,13 +74,23 @@ public class BoardController {
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "게시글 등록중 오류가 발생하였습니다.");
 		
+		List<AttachDto> attachDtoList = new ArrayList<AttachDto>();
 		
-		BoardDto result = service.createBoard(dto);
+		for(MultipartFile mf : dto.getFiles()) {
+			logger.info(mf.getOriginalFilename());
+			AttachDto attachDto = attachService.uploadFile(mf);
+			if(attachDto != null) attachDtoList.add(attachDto);
+		}
 		
-		logger.debug("1 : "+result.toString());
-		logger.info("2 : "+result.toString());
-		logger.warn("3 : " +result.toString());
-		logger.error("4 : "+result.toString());
+		if(dto.getFiles().size() == attachDtoList.size()) {
+			int result = service.createBoard(dto,attachDtoList);
+			if(result > 0) {
+				resultMap.put("res_code", "200");
+				resultMap.put("res_msg","게시글이 등록되었습니다.");
+			}
+		}
+		//BoardDto result = service.createBoard(dto);
+		
 		return resultMap;
 	}
 	
@@ -103,6 +119,8 @@ public class BoardController {
 		logger.info("게시글 단일 조회 : "+id);
 		Board result = service.selectBoardOne(id);
 		model.addAttribute("board",result);
+		List<Attach> attachList = attachService.selectAttachList(id);
+		model.addAttribute("attachList", attachList);
 		return "board/detail";
 	}
 	
@@ -110,26 +128,29 @@ public class BoardController {
 	public String updateBoardView(@PathVariable("id") Long id, Model model) {
 		Board board = service.selectBoardOne(id);
 		model.addAttribute("board", board);
+		
+		List<Attach> attachList = attachService.selectAttachList(id);
+		model.addAttribute("attachList",attachList);
 		return "board/update";
 	}
 	
 	@PostMapping("/board/{id}/update")
 	@ResponseBody
 	public Map<String,String> updateBoardApi(BoardDto param) {
-		 logger.info("데이터 확인"+param);
-		/* Board board = service.updateBoardOne(); */
 		Map<String,String> resultMap = new HashMap<String,String>();
-		Board result = service.updateBoard(param);
+		 
+		logger.info("데이터 확인"+param.getDelete_files());
+		
+		/* Board board = service.updateBoardOne(); */
+		//Board result = service.updateBoard(param);
 		// 1.BoardDto 출력 (전달 확인)
 		// 2.BoardService -> BoardRepository 게시글 수정
 		// 3.수정 결과 Entity가 null이 아니면 성공 그 외에는 실패
-		if(result != null) {
-			resultMap.put("res_code", "200");
-			resultMap.put("res_msg", "수정 성공");
-		}else {
-			resultMap.put("res_code", "500");
-			resultMap.put("res_msg", "수정 실패");			
-		}
+		/*
+		 * if(result != null) { resultMap.put("res_code", "200");
+		 * resultMap.put("res_msg", "수정 성공"); }else { resultMap.put("res_code", "500");
+		 * resultMap.put("res_msg", "수정 실패"); }
+		 */
 		return resultMap;
 	}
 	
