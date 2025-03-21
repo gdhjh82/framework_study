@@ -9,13 +9,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 public class MemberDto {
 	private Long member_no;
@@ -24,6 +22,8 @@ public class MemberDto {
 	private String member_name;
 	private LocalDateTime reg_date;
 	private LocalDateTime mod_date;
+	private String member_role;
+	
 	
 	public Member toEntity() {
 		return Member.builder()
@@ -31,10 +31,11 @@ public class MemberDto {
 				.memberId(member_id)
 				.memberPw(member_pw)
 				.memberName(member_name)
+				.memberRole(member_role)
 				.build();
 	}
-	
-	public MemberDto toDto(Member member) {
+
+	public MemberDto toDto(Member member){
 		return MemberDto.builder()
 				.member_no(member.getMemberNo())
 				.member_id(member.getMemberId())
@@ -42,6 +43,7 @@ public class MemberDto {
 				.member_name(member.getMemberName())
 				.reg_date(member.getRegDate())
 				.mod_date(member.getModDate())
-				.build();
+				//.member_role(member.getMemberRole())
+				.build();				
 	}
 }

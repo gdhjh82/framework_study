@@ -4,6 +4,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>게시판</title>
+<meta id="_csrf" name="_csrf" th:attr="content=${_csrf.token}">
+<meta id="_csrf_header" name="_csrf_header" th:attr="content=${_csrf.headerName}">
 </head>
 <body>
 	<!-- 이 부분을 header.html로 쓰겠다 뭐 요런 뜻? -->

@@ -25,19 +25,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	
 	@Column(name="member_no")
 	private Long memberNo;
-	
+
 	@Column(name="member_id")
 	private String memberId;
-	
+
 	@Column(name="member_pw")
 	private String memberPw;
-	
+
 	@Column(name="member_name")
 	private String memberName;
 	
@@ -46,9 +44,12 @@ public class Member {
 	private LocalDateTime regDate;
 	
 	@UpdateTimestamp
-	@Column(insertable=false,name="mod_date")
+	@Column(insertable = false,name="mod_date")
 	private LocalDateTime modDate;
-
+	
 	@OneToMany(mappedBy="member")
 	private List<Board> boards;
+	
+	@Column(nullable=false, name="member_role")
+	private String memberRole;
 }

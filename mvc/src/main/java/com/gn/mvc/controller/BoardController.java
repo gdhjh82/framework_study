@@ -138,19 +138,24 @@ public class BoardController {
 	@ResponseBody
 	public Map<String,String> updateBoardApi(BoardDto param) {
 		Map<String,String> resultMap = new HashMap<String,String>();
-		 
-		logger.info("데이터 확인"+param.getDelete_files());
 		
-		/* Board board = service.updateBoardOne(); */
-		//Board result = service.updateBoard(param);
-		// 1.BoardDto 출력 (전달 확인)
-		// 2.BoardService -> BoardRepository 게시글 수정
-		// 3.수정 결과 Entity가 null이 아니면 성공 그 외에는 실패
-		/*
-		 * if(result != null) { resultMap.put("res_code", "200");
-		 * resultMap.put("res_msg", "수정 성공"); }else { resultMap.put("res_code", "500");
-		 * resultMap.put("res_msg", "수정 실패"); }
-		 */
+		List<AttachDto> attachDtoList = new ArrayList<AttachDto>();
+		//logger.info("데이터 확인"+param.getDelete_files());
+		
+		for(MultipartFile mf: param.getFiles()) {
+			AttachDto attachDto = attachService.uploadFile(mf);
+			if(attachDto != null) attachDtoList.add(attachDto);
+		}
+		logger.debug(param.toString());
+		Board saved = service.updateBoard(param, attachDtoList);
+		if(saved != null) {
+			resultMap.put("res_code", "200");
+			resultMap.put("res_msg", "수정되었습니다.");
+		}else {
+			resultMap.put("res_code", "500");
+			resultMap.put("res_msg", "수정 실패.");
+		}
+		
 		return resultMap;
 	}
 	
