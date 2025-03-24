@@ -17,25 +17,28 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {
-
-	private final ChatRoomRepository repository;
 	
+	private final ChatRoomRepository repository;
 	
 	public ChatRoom selectChatRoomOne(Long id) {
 		return repository.findById(id).orElse(null);
 	}
 	
 	public List<ChatRoom> selectChatRoomAll(){
-		Authentication authentication
+		Authentication authentication 
 			= SecurityContextHolder.getContext().getAuthentication();
 		
 		MemberDetails md = (MemberDetails)authentication.getPrincipal();
 		
-		Specification<ChatRoom> spec = (root,query,criteriaBuilder) -> null;
+		Specification<ChatRoom> spec = (root, query, criteriaBuilder) -> null;
 		spec = spec.and(ChatRoomSpecification.fromMemberEquals(md.getMember()));
 		spec = spec.or(ChatRoomSpecification.toMemberEquals(md.getMember()));
 		
 		List<ChatRoom> list = repository.findAll(spec);
 		return list;
 	}
+	
+	
+	
+	
 }

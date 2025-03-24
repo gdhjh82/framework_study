@@ -6,9 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gn.mvc.entity.ChatMsg;
-import com.gn.mvc.entity.ChatRoom;
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-
-	List<ChatRoom> findAll(Specification<ChatRoom> spec);
+public interface ChatMsgRepository extends JpaRepository<ChatMsg,Long>{
+	List<ChatMsg> findAll(Specification<ChatMsg> spec);
 }
