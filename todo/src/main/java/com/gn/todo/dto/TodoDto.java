@@ -2,6 +2,7 @@ package com.gn.todo.dto;
 
 import com.gn.todo.entity.Todo;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,21 +21,13 @@ public class TodoDto {
 	private String content;
 	private String flag;
 	
-	public Todo toEntity() {
-		return Todo.builder()
-				.no(no)
-				.content(content)
-				.flag(flag)
-				.build();
-	}
-	
-	public TodoDto toDto(Todo todo) {
-		return TodoDto.builder()
-				.no(todo.getNo())
-				.content(todo.getContent())
-				.flag(todo.getFlag())
-				.build();
-	}
+	/*
+	 * public Todo toEntity() { return Todo.builder() .no(no) .content(content)
+	 * .flag(flag) .build(); }
+	 * 
+	 * public TodoDto toDto(Todo todo) { return TodoDto.builder() .no(todo.getNo())
+	 * .content(todo.getContent()) .flag(todo.getFlag()) .build(); }
+	 */
 	
 	
 }
