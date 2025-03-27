@@ -19,7 +19,7 @@ public class TodoDto {
 
 	private Long no;
 	private String content;
-	private String flag = "N";
+	private String flag;
 	
 	public TodoDto toDto(Todo target) {
 			return TodoDto.builder()
