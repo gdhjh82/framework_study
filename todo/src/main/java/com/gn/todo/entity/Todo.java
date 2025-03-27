@@ -10,25 +10,26 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="todo")
-@Builder
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Todo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "no")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="no")
 	private Long no;
 	
-	@Column(name = "content")
+	@Column(name="content")
 	private String content;
 	
 	@Column(name="flag")
 	private String flag;
+	
+	
 }
