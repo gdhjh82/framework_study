@@ -31,7 +31,6 @@ public class AttachService {
 		return attachRepository.findById(id).orElse(null);
 	}
 	
-	
 	// 1. 파일 자체 업로드
 	public AttachDto uploadFile(MultipartFile file) {
 		AttachDto dto = new AttachDto();
