@@ -25,7 +25,7 @@ public class HomeController {
 	
 	@GetMapping({"","/"})
 	public String homeView(Model model, SearchDto searchDto, PageDto pageDto) {
-		
+		System.out.println();
 		if(pageDto.getNowPage() == 0) pageDto.setNowPage(1);
 
 		Page<Todo> resultList = todoService.selectTodoAll(searchDto,pageDto);

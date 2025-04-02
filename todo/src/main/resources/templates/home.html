@@ -20,9 +20,9 @@
 		</thead>
 		<tbody>
 			<tr th:each="attach, attachStatus : ${attachList}">
-				<td th:text="${attachStatus.count}">번호(Status의 count사용)</td>
+				<td th:text="${attachStatus.count}">번호</td>
 				<td>
-					<a th:onclick="|location.href='@{/download/{id}(id=${attach.attachNo})}'|"
+					<a th:onclick="|location.href='@{/s3/download/{id}(id=${attach.attachNo})}'|"
 						th:text="${attach.oriName}">
 						파일명
 					</a>
@@ -35,7 +35,7 @@
 		createFileFrm.addEventListener("submit",(e)=>{
 			e.preventDefault();
 			const payload = new FormData(createFileFrm);
-			fetch("/attach/create",{
+			fetch("/s3/upload",{
 				method:'post',
 				body:payload
 			})
